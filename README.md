@@ -1,3 +1,3 @@
-# Symfony Skeleton
+# Symfony boilerplate
 
-Who knows what will be born here...
+A Symfony boilerplate with cumulative and isolated git commits, so it's easy to change or remove what we don't want to use.
