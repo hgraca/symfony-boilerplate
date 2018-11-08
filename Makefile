@@ -31,6 +31,8 @@ help:
 
 ########################################################################################################################
 
+COVERAGE_REPORT_PATH="var/coverage.clover.xml"
+
 cs-fix:
 	php vendor/bin/php-cs-fixer fix --verbose
 
@@ -42,3 +44,13 @@ dep-install-prd:
 
 dep-update:
 	composer update
+
+test:
+	- $(MAKE) cs-fix
+	bin/phpunit
+
+# We use phpdbg because is part of the core and so that we don't need to install xdebug just to get the coverage.
+# Furthermore, phpdbg gives us more info in certain conditions, ie if the memory_limit has been reached.
+test_coverage:
+	phpdbg -qrr bin/phpunit --coverage-text --coverage-clover=${COVERAGE_REPORT_PATH}
+
