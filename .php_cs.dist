@@ -1,0 +1,66 @@
+<?php
+
+declare(strict_types=1);
+
+$fileHeaderComment = <<<COMMENT
+This file is part of my Symfony boilerplate,
+following the Explicit Architecture principles.
+
+@link https://herbertograca.com/2017/11/16/explicit-architecture-01-ddd-hexagonal-onion-clean-cqrs-how-i-put-it-all-together
+@link https://herbertograca.com/2018/07/07/more-than-concentric-layers/
+
+(c) Herberto Graça
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+COMMENT;
+
+$finder = PhpCsFixer\Finder::create()
+    ->in(['src'])
+    ->name('*.php')
+;
+
+return PhpCsFixer\Config::create()
+    ->setRiskyAllowed(true)
+    ->setRules([
+        '@Symfony' => true,
+        '@Symfony:risky' => true,
+        '@PHP71Migration:risky' => true,
+        'array_syntax' => ['syntax' => 'short'],
+        'class_definition' => [
+            'multiLineExtendsEachSingleLine' => true,
+        ],
+        'concat_space' => ['spacing' => 'one'],
+        'declare_strict_types' => true,
+        'fully_qualified_strict_types' => true,
+        'header_comment' => ['header' => $fileHeaderComment, 'separate' => 'both'],
+        'linebreak_after_opening_tag' => true,
+        'mb_str_functions' => true,
+        'native_function_invocation' => [],
+        'no_multiline_whitespace_before_semicolons' => true,
+        'no_php4_constructor' => true,
+        'no_short_echo_tag' => true,
+        'no_unreachable_default_argument_value' => true,
+        'no_useless_else' => true,
+        'no_useless_return' => true,
+        'ordered_imports' => [
+            'sort_algorithm' => 'alpha',
+            'imports_order' => ['class', 'function', 'const'],
+        ],
+        'phpdoc_align' => false,
+        'phpdoc_order' => true,
+        'phpdoc_summary' => false,
+        'pre_increment' => false,
+        'return_type_declaration' => ['space_before' => 'none'],
+        'semicolon_after_instruction' => true,
+        'strict_comparison' => true,
+        'strict_param' => true,
+        'void_return' => true,
+        'yoda_style' => [
+            'equal' => false,
+            'identical' => false,
+        ],
+    ])
+    ->setFinder($finder)
+    ->setCacheFile(__DIR__.'/var/.php_cs.cache')
+;

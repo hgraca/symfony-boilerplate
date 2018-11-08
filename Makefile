@@ -31,6 +31,9 @@ help:
 
 ########################################################################################################################
 
+cs-fix:
+	php vendor/bin/php-cs-fixer fix --verbose
+
 dep-install:
 	composer install
 
