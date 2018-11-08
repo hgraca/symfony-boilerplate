@@ -1,0 +1,40 @@
+paths:
+  - ./src
+
+layers:
+
+  - name: ConsoleCommand
+    collectors:
+      - type: className
+        regex: .*\\Console\\.*Command$
+
+  - name: Service
+    collectors:
+      - type: className
+        regex: .*Service$
+
+  - name: Query
+    collectors:
+      - type: className
+        regex: .*Query$
+      - type: className
+        regex: .*QueryInterface$
+
+##############################################################
+##   RULES SET
+##
+##   Some dependency rules might be missing, I only added the ones currently needed to make the test green.
+##   Any new dependency should be analysed and added if appropriate.
+##
+###############################
+
+ruleset:
+
+  ConsoleCommand:
+    - Service
+    - Query
+
+  Service:
+    - Query
+
+  Query: ~

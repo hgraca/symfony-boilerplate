@@ -36,6 +36,18 @@ COVERAGE_REPORT_PATH="var/coverage.clover.xml"
 cs-fix:
 	php vendor/bin/php-cs-fixer fix --verbose
 
+.dep_analyzer-install:
+	if [ ! -f bin/deptrac ]; then \
+      echo " // deptrac not found in bin/deptrac. Downloading it ..."; \
+      curl -LS http://get.sensiolabs.de/deptrac.phar -o bin/deptrac; \
+      chmod +x bin/deptrac; \
+      echo; \
+      echo "If you want to create nice dependency graphs, you need to install graphviz:"; \
+      echo "    - For osx/brew: $ brew install graphviz"; \
+      echo "    - For ubuntu: $ sudo apt-get install graphviz"; \
+      echo "    - For windows: https://graphviz.gitlab.io/_pages/Download/Download_windows.html"; \
+  fi;
+
 dep-install:
 	composer install
 
@@ -48,6 +60,41 @@ dep-update:
 test:
 	- $(MAKE) cs-fix
 	bin/phpunit
+	$(MAKE) test-dep
+
+test-dep:
+	$(MAKE) test-dep-components
+	$(MAKE) test-dep-layers
+	$(MAKE) test-dep-class
+
+test-dep-graph:
+	$(MAKE) test-dep-components-graph
+	$(MAKE) test-dep-layers-graph
+	$(MAKE) test-dep-class-graph
+
+test-dep-components:
+	$(MAKE) .dep_analyzer-install
+	bin/deptrac analyze depfile.components.yaml --formatter-graphviz=0
+
+test-dep-components-graph:
+	$(MAKE) .dep_analyzer-install
+	bin/deptrac analyze depfile.components.yaml --formatter-graphviz-dump-image=var/deptrac_components.png --formatter-graphviz-dump-dot=var/deptrac_components.dot
+
+test-dep-layers:
+	$(MAKE) .dep_analyzer-install
+	bin/deptrac analyze depfile.layers.yaml --formatter-graphviz=0
+
+test-dep-layers-graph:
+	$(MAKE) .dep_analyzer-install
+	bin/deptrac analyze depfile.layers.yaml --formatter-graphviz-dump-image=var/deptrac_layers.png --formatter-graphviz-dump-dot=var/deptrac_layers.dot
+
+test-dep-class:
+	$(MAKE) .dep_analyzer-install
+	bin/deptrac analyze depfile.classes.yaml --formatter-graphviz=0
+
+test-dep-class-graph:
+	$(MAKE) .dep_analyzer-install
+	bin/deptrac analyze depfile.classes.yaml --formatter-graphviz-dump-image=var/deptrac_class.png --formatter-graphviz-dump-dot=var/deptrac_class.dot
 
 # We use phpdbg because is part of the core and so that we don't need to install xdebug just to get the coverage.
 # Furthermore, phpdbg gives us more info in certain conditions, ie if the memory_limit has been reached.

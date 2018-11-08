@@ -1,0 +1,186 @@
+paths:
+  - ./src
+
+##############################################################
+##   LAYERS
+###############################
+
+layers:
+
+###############################
+##   USER INTERFACE
+###############################
+
+  - name: UI-Component
+    collectors:
+      - type: className
+        regex: .*\\Presentation\\Web\\Core\\Component\\.*
+
+  - name: UI-Port
+    collectors:
+      - type: className
+        regex: .*\\Presentation\\Web\\Core\\Port\\.*
+
+  - name: UI-Infrastructure
+    collectors:
+      - type: className
+        regex: .*\\Presentation\\Web\\Infrastructure\\.*
+
+##############################
+#   APPLICATION
+##############################
+
+  - name: Application
+    collectors:
+      - type: className
+        regex: .*\\Core\\Component\\.*\\Application\\.*
+
+##############################
+#   DOMAIN
+##############################
+
+  - name: Domain
+    collectors:
+      - type: className
+        regex: .*\\Core\\Component\\.*\\Domain\\.*
+
+##############################
+#   PORT
+##############################
+
+  - name: Port
+    collectors:
+      - type: className
+        regex: .*\\Core\\Port\\.*
+
+  - name: Port-PSR
+    collectors:
+      - type: className
+        regex: ^Psr\\.*
+
+##############################
+#   SHARED KERNEL
+##############################
+
+  - name: SharedKernel-Application
+    collectors:
+      - type: className
+        regex: .*\\Core\\SharedKernel\\Component\\.*\\Application\\.*
+
+  - name: SharedKernel-Domain
+    collectors:
+      - type: className
+        regex: .*\\Core\\SharedKernel\\Component\\.*\\Domain\\.*
+
+  - name: SharedKernel-Port
+    collectors:
+      - type: className
+        regex: .*\\Core\\SharedKernel\\Port\\.*
+
+##############################
+#   INFRASTRUCTURE
+##############################
+
+  - name: Infrastructure
+    collectors:
+      - type: className
+        regex: .*\\Infrastructure\\.*
+
+###############################
+##   LIBRARIES
+###############################
+
+  - name: Vendor
+    collectors:
+      - type: bool
+        must:
+          - type: className
+            regex: .+\\.*
+        must_not:
+          - type: className
+            regex: .*\\.*
+          - type: className
+            regex: ^Psr\\.*
+
+##############################################################
+##   RULES SET
+##
+##   Some dependency rules might be missing, I only added the ones currently needed to make the test green.
+##   Any new dependency should be analysed and added if appropriate.
+##
+###############################
+
+ruleset:
+
+  UI-Component:
+    - SharedKernel-Domain
+    - SharedKernel-Application
+    - Domain
+    - Application
+    - Port
+    - Port-PSR
+    - UI-Port
+
+  UI-Port:
+    - SharedKernel-Domain
+    - SharedKernel-Application
+    - Domain
+    - Application
+    - Port
+    - Port-PSR
+    - UI-Component
+
+  UI-Infrastructure:
+    - SharedKernel-Domain
+    - SharedKernel-Application
+    - Domain
+    - Application
+    - Port
+    - Port-PSR
+    - UI-Port
+    - UI-Component
+    - Vendor
+
+  Application:
+    - SharedKernel-Domain
+    - SharedKernel-Application
+    - Domain
+    - Port
+    - Port-PSR
+
+  Domain:
+    - Port-PSR
+    - SharedKernel-Domain
+
+  Port:
+    - SharedKernel-Domain
+    - SharedKernel-Application
+    - SharedKernel-Port
+    - Domain
+    - Application
+    - Port-PSR
+
+  SharedKernel-Application:
+    - SharedKernel-Domain
+    - SharedKernel-Port
+
+  SharedKernel-Domain:
+    - Vendor
+
+  SharedKernel-Port:
+    - SharedKernel-Domain
+    - SharedKernel-Application
+    - Port-PSR
+
+  Infrastructure:
+    - SharedKernel-Domain
+    - SharedKernel-Application
+    - SharedKernel-Port
+    - Domain
+    - Application
+    - Port
+    - Port-PSR
+    - Vendor
+
+  Vendor:
+    - Port-PSR

@@ -1,5 +1,6 @@
 !**/.gitkeep
 Makefile.custom
+deptrac
 
 ###> symfony/framework-bundle ###
 /.env
