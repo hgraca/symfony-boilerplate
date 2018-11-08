@@ -10,6 +10,7 @@
         "symfony/console": "^4",
         "symfony/flex": "^1.1",
         "symfony/framework-bundle": "^4",
+        "symfony/monolog-bundle": "^3.3",
         "symfony/yaml": "^4"
     },
     "require-dev": {
