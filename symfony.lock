@@ -32,6 +32,12 @@
             "ref": "81dee417d2cc60cd1c9d6208dff2ec22a1103e93"
         }
     },
+    "hamcrest/hamcrest-php": {
+        "version": "v2.0.0"
+    },
+    "mockery/mockery": {
+        "version": "1.2.0"
+    },
     "myclabs/deep-copy": {
         "version": "1.8.1"
     },
