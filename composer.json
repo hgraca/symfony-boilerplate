@@ -8,6 +8,8 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-intl": "*",
+        "ext-json": "*",
+        "ext-pcntl": "*",
         "hgraca/php-extension": "dev-master",
         "symfony/console": "^4",
         "symfony/flex": "^1.1",
