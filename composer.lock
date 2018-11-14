@@ -4,8 +4,53 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "b29b7042e1543293125aee3f696a1513",
+    "content-hash": "743465762b74065469aa952bf4dd9d94",
     "packages": [
+        {
+            "name": "hgraca/php-extension",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://gitlab.com/hgraca/php-extension.git",
+                "reference": "089cfeb209a78b5d96e2164122a2f9c42258d804"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://gitlab.com/api/v4/projects/hgraca%2Fphp-extension/repository/archive.zip?sha=089cfeb209a78b5d96e2164122a2f9c42258d804",
+                "reference": "089cfeb209a78b5d96e2164122a2f9c42258d804",
+                "shasum": ""
+            },
+            "require": {
+                "ext-ctype": "*",
+                "ext-dom": "*",
+                "ext-iconv": "*",
+                "ext-intl": "*",
+                "ext-json": "*",
+                "php": "^7.2"
+            },
+            "require-dev": {
+                "ext-zip": "*",
+                "friendsofphp/php-cs-fixer": "^2",
+                "mockery/mockery": "^1.2",
+                "phpunit/phpunit": "^7.4",
+                "ramsey/uuid": "^3.7"
+            },
+            "suggest": {
+                "ramsey/uuid": "Allows using this libraries UUID functionality."
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Hgraca\\PhpExtension\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A PHP library with code that can be included into a project and used as if it was part of the PHP core itself.",
+            "time": "2018-11-17T11:03:11+00:00"
+        },
         {
             "name": "monolog/monolog",
             "version": "1.24.0",
@@ -3821,6 +3866,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "hgraca/php-extension": 20,
         "roave/security-advisories": 20
     },
     "prefer-stable": false,
@@ -3828,7 +3874,8 @@
     "platform": {
         "php": "^7.1.3",
         "ext-ctype": "*",
-        "ext-iconv": "*"
+        "ext-iconv": "*",
+        "ext-intl": "*"
     },
     "platform-dev": []
 }

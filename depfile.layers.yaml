@@ -90,6 +90,11 @@ layers:
 ##   LIBRARIES
 ###############################
 
+  - name: PhpExtension
+    collectors:
+      - type: className
+        regex: ^Hgraca\\PhpExtension\\.*
+
   - name: Vendor
     collectors:
       - type: bool
@@ -97,6 +102,8 @@ layers:
           - type: className
             regex: .+\\.*
         must_not:
+          - type: className
+            regex: ^Hgraca\\PhpExtension\\.*
           - type: className
             regex: .*\\.*
           - type: className
@@ -113,6 +120,7 @@ layers:
 ruleset:
 
   UI-Component:
+    - PhpExtension
     - SharedKernel-Domain
     - SharedKernel-Application
     - Domain
@@ -122,6 +130,7 @@ ruleset:
     - UI-Port
 
   UI-Port:
+    - PhpExtension
     - SharedKernel-Domain
     - SharedKernel-Application
     - Domain
@@ -131,6 +140,7 @@ ruleset:
     - UI-Component
 
   UI-Infrastructure:
+    - PhpExtension
     - SharedKernel-Domain
     - SharedKernel-Application
     - Domain
@@ -142,6 +152,7 @@ ruleset:
     - Vendor
 
   Application:
+    - PhpExtension
     - SharedKernel-Domain
     - SharedKernel-Application
     - Domain
@@ -149,10 +160,12 @@ ruleset:
     - Port-PSR
 
   Domain:
+    - PhpExtension
     - Port-PSR
     - SharedKernel-Domain
 
   Port:
+    - PhpExtension
     - SharedKernel-Domain
     - SharedKernel-Application
     - SharedKernel-Port
@@ -161,24 +174,32 @@ ruleset:
     - Port-PSR
 
   SharedKernel-Application:
+    - PhpExtension
     - SharedKernel-Domain
     - SharedKernel-Port
 
   SharedKernel-Domain:
+    - PhpExtension
     - Vendor
 
   SharedKernel-Port:
+    - PhpExtension
     - SharedKernel-Domain
     - SharedKernel-Application
     - Port-PSR
 
   Infrastructure:
+    - PhpExtension
     - SharedKernel-Domain
     - SharedKernel-Application
     - SharedKernel-Port
     - Domain
     - Application
     - Port
+    - Port-PSR
+    - Vendor
+
+  PhpExtension:
     - Port-PSR
     - Vendor
 
