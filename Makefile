@@ -46,9 +46,6 @@ box-push:
       curl -J -L https://github.com/humbug/box/releases/download/3.3.1/box.phar -o bin/box; \
       chmod +x bin/box; \
   fi;
-	echo " // purging prod cache ..."
-	rm -Rf var/cache/prod/*
-	bin/console cache:warmup --env=prod --no-debug
 	bin/box compile
 
 compile:

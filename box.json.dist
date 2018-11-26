@@ -9,8 +9,7 @@
     ],
     "datetime": "release-date",
     "directories": [
-        "config",
-        "var/cache/prod"
+        "config"
     ],
     "files": [
         "composer.json"

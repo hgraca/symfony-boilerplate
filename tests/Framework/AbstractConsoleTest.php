@@ -17,17 +17,14 @@ declare(strict_types=1);
 
 namespace Acme\App\Test\Framework;
 
-use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
 abstract class AbstractConsoleTest extends AbstractIntegrationTest
 {
     protected function execute(string $commandName, array $arguments = []): string
     {
-        $application = new Application(self::$kernel);
-
         $commandTester = new CommandTester(
-            $application->find($commandName)
+            self::$kernel->getCliCommand($commandName)
         );
 
         $commandTester->execute(

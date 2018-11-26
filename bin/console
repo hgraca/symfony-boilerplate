@@ -1,40 +1,35 @@
 #!/usr/bin/env php
 <?php
 
-use Acme\App\Infrastructure\Framework\Symfony\Kernel;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Acme\App\Infrastructure\Framework\Symfony\CliKernel;
+use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Debug\Debug;
 use Symfony\Component\Dotenv\Dotenv;
 
 set_time_limit(0);
 
-require __DIR__.'/../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 if (!class_exists(Application::class)) {
-    throw new \RuntimeException('You need to add "symfony/framework-bundle" as a Composer dependency.');
+    throw new \RuntimeException('You need to add "symfony/console" as a Composer dependency.');
 }
 
-if (!isset($_SERVER['APP_ENV'])) {
+if (!isset($_ENV['APP_ENV'])) {
     if (class_exists(Dotenv::class) && file_exists(__DIR__ . '/../.env')) {
         (new Dotenv())->load(__DIR__ . '/../.env');
     } else {
-        $_SERVER['APP_ENV'] = 'prod';
+        $_ENV['APP_ENV'] = 'prod';
     }
 }
 
 $input = new ArgvInput();
-$env = $input->getParameterOption(['--env', '-e'], $_SERVER['APP_ENV'] ?? 'dev', true);
-$debug = (bool) ($_SERVER['APP_DEBUG'] ?? ('prod' !== $env)) && !$input->hasParameterOption('--no-debug', true);
+$env = $input->getParameterOption(['--env', '-e'], $_ENV['APP_ENV'] ?? 'dev', true);
 
-if ($debug) {
+if ('dev' === $env && class_exists(Debug::class)) {
     umask(0000);
-
-    if (class_exists(Debug::class)) {
-        Debug::enable();
-    }
+    Debug::enable();
 }
 
-$kernel = new Kernel($env, $debug);
-$application = new Application($kernel);
-$application->run($input);
+$kernel = new CliKernel($env);
+$kernel->runApplication($input);
