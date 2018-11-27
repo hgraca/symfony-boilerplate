@@ -9,8 +9,14 @@
         "ext-iconv": "*",
         "ext-intl": "*",
         "ext-json": "*",
-        "ext-pcntl": "*",
+        "ext-pdo_sqlite": "*",
+        "doctrine/doctrine-bundle": "^1.6.10",
+        "doctrine/doctrine-fixtures-bundle": "^3.0",
+        "doctrine/doctrine-migrations-bundle": "^1.3",
+        "doctrine/orm": "^2.5.11",
         "hgraca/php-extension": "dev-master",
+        "ramsey/uuid": "^3.7",
+        "ramsey/uuid-doctrine": "^1.4",
         "symfony/console": "^4",
         "symfony/flex": "^1.1",
         "symfony/framework-bundle": "^4",
@@ -19,7 +25,9 @@
     },
     "require-dev": {
         "ext-zip": "*",
-        "friendsofphp/php-cs-fixer": "^2",
+        "dama/doctrine-test-bundle": "^5.0",
+        "friendsofphp/php-cs-fixer": "^2.7",
+        "hgraca/doctrine-test-db-regeneration-bundle": "^1.0",
         "mockery/mockery": "^1.2",
         "phpunit/phpunit": "^7.4",
         "roave/security-advisories": "dev-master",
@@ -41,6 +49,7 @@
     },
     "autoload-dev": {
         "psr-4": {
+            "Acme\\App\\Build\\": "build/",
             "Acme\\App\\Test\\": "tests/"
         }
     },

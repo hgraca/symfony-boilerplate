@@ -1,0 +1,37 @@
+parameters:
+  # Adds a fallback DATABASE_URL if the env var is not set.
+  # This allows you to run cache:warmup even if your
+  # environment variables are not available yet.
+  # You should not need to change this value.
+  env(DATABASE_URL): ''
+
+doctrine:
+  dbal:
+    driver: 'pdo_sqlite'    # 'pdo_mysql'
+    server_version: '3.15'  # '5.7'
+    charset: utf8mb4
+    #        default_table_options:
+    #            charset: utf8mb4
+    #            collate: utf8mb4_unicode_ci
+
+    url: '%env(resolve:DATABASE_URL)%'
+
+    types:
+      uuid: Acme\App\Infrastructure\Persistence\Doctrine\Type\UuidType
+      binary_uuid: Acme\App\Infrastructure\Persistence\Doctrine\Type\BinaryUuidType
+  orm:
+    auto_generate_proxy_classes: '%kernel.debug%'
+    dql:
+      string_functions:
+        group_concat: DoctrineExtensions\Query\Mysql\GroupConcat
+    naming_strategy: doctrine.orm.naming_strategy.underscore
+    auto_mapping: false
+    mappings:
+    # Each mapping must have its own 'dir' directive.
+    # If we put them all in the same dir, they will not be found.
+#            Acme\App\Core\Component\Blog\Domain\Post\Tag:
+#                is_bundle: false
+#                type: yml
+#                dir: '%kernel.project_dir%/config/doctrine/blog/post/tag'
+#                prefix: 'Acme\App\Core\Component\Blog\Domain\Post\Tag'
+#                alias: PostTag

@@ -13,6 +13,14 @@
         <env name="APP_DEBUG" value="1"/>
         <env name="APP_SECRET" value="5a79a1c866efef9ca1800f971d689f3e"/>
         <!-- define your env variables for the test env here -->
+
+      <!-- ###+ doctrine/doctrine-bundle ### -->
+      <!-- Format described at http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html#connecting-using-a-url -->
+      <!-- For an SQLite database, use: "sqlite:///%kernel.project_dir%/var/data.db" -->
+      <!-- Configure your db driver and server_version in config/packages/doctrine.yaml -->
+      <!--<env name="DATABASE_URL" value="mysql://db_user:db_password@127.0.0.1:3306/db_name"/>-->
+      <env name="DATABASE_URL" value="sqlite:///%kernel.project_dir%/var/data.db"/>
+      <!-- ###- doctrine/doctrine-bundle ### -->
     </php>
 
     <testsuites>
@@ -44,5 +52,29 @@
 
     <listeners>
         <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener"/>
+
+      <!-- At the beginning of every test run, if there are changes to the DB or the test DB is not there,
+           it will generate the test DB and create a backup of it and a backup of the fixtures references.
+           At the beginning of every test it can recover the test DB backup, however since we are using
+           DAMA\DoctrineTestBundle that is not necessary, so we turn it off. -->
+      <listener class="\Hgraca\DoctrineTestDbRegenerationBundle\EventSubscriber\DbRegenerationPHPUnitEventSubscriber">
+        <arguments>
+          <integer>0</integer> <!-- disable $shouldRegenerateOnEveryTest -->
+          <integer>1</integer> <!-- enable $shouldRegenerateDbOnEveryTest -->
+          <integer>0</integer> <!-- disable $shouldReuseExistingDbBkp -->
+          <array>
+            <!-- Pass the migrations versions to run.
+                 These are only related to tables that have no entities, and therefore not created by the
+                 Doctrine schema manager. -->
+            <element key="0">
+              <string>20180118095302</string>
+            </element>
+          </array>
+        </arguments>
+      </listener>
+
+      <!-- it begins a database transaction before every testcase and rolls it back after
+           the test finished, so tests can manipulate the database without affecting other tests -->
+      <listener class="\DAMA\DoctrineTestBundle\PHPUnit\PHPUnitListener"/>
     </listeners>
 </phpunit>
