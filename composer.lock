@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "743465762b74065469aa952bf4dd9d94",
+    "content-hash": "78c3e6a2c9fa44aab97f14da44bbf683",
     "packages": [
         {
             "name": "hgraca/php-extension",
@@ -3877,5 +3877,7 @@
         "ext-iconv": "*",
         "ext-intl": "*"
     },
-    "platform-dev": []
+    "platform-dev": {
+        "ext-zip": "*"
+    }
 }

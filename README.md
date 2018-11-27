@@ -1,4 +1,6 @@
 # Symfony boilerplate
+[![build status](https://gitlab.com/hgraca/symfony-boilerplate/badges/master/build.svg)](https://gitlab.com/hgraca/symfony-boilerplate/commits/master)
+[![coverage report](https://gitlab.com/hgraca/symfony-boilerplate/badges/master/coverage.svg)](https://gitlab.com/hgraca/symfony-boilerplate/commits/master)
 
 A Symfony boilerplate with cumulative and isolated git commits, so it's easy to change or remove what we don't want to use.
 

@@ -46,6 +46,9 @@ box-push:
 cs-fix:
 	./bin/docker-run.sh ${CONTAINER_NAME} make .cs-fix
 
+.cs-fix-ci:
+	php vendor/bin/php-cs-fixer fix --verbose --dry-run --using-cache=no
+
 .dep_analyzer-install:
 	if [ ! -f bin/deptrac ]; then \
       echo " // deptrac not found in bin/deptrac. Downloading it ..."; \
@@ -60,6 +63,9 @@ cs-fix:
 
 dep-install:
 	./bin/docker-run.sh ${CONTAINER_NAME} composer install
+
+.dep-install-ci:
+	composer install
 
 dep-install-prd:
 	./bin/docker-run.sh ${CONTAINER_NAME} composer install --no-dev --optimize-autoloader --no-ansi --no-interaction --no-progress --no-scripts

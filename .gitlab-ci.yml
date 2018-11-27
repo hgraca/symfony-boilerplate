@@ -1,0 +1,15 @@
+image: hgraca/context-mapper
+
+Test:
+  stage: test
+  script:
+    - cp /usr/bin/deptrac ./bin/deptrac
+    - make .dep-install-ci
+    - rm -f tests/bootstrap.php
+    - make .test-ci
+
+Coverage:
+  stage: test
+  script:
+    - make .dep-install-ci
+    - make .test_coverage-ci
