@@ -16,7 +16,7 @@ file that was distributed with this source code.
 COMMENT;
 
 $finder = PhpCsFixer\Finder::create()
-    ->in(['src', 'tests', 'lib', 'build/Migration', 'build/Fixture'])
+    ->in(['src', 'tests', 'lib'])
     ->name('*.php')
 ;
 
