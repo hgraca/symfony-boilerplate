@@ -31,10 +31,20 @@ help:
 
 ########################################################################################################################
 
+CONTAINER_NAME="hgraca/context-mapper"
 COVERAGE_REPORT_PATH="var/coverage.clover.xml"
 
-cs-fix:
+box-build:
+	docker build -t ${CONTAINER_NAME} -f ./build/dockerfile .
+
+box-push:
+	docker push ${CONTAINER_NAME}
+
+.cs-fix:
 	php vendor/bin/php-cs-fixer fix --verbose
+
+cs-fix:
+	./bin/docker-run.sh ${CONTAINER_NAME} make .cs-fix
 
 .dep_analyzer-install:
 	if [ ! -f bin/deptrac ]; then \
@@ -49,30 +59,38 @@ cs-fix:
   fi;
 
 dep-install:
-	composer install
+	./bin/docker-run.sh ${CONTAINER_NAME} composer install
 
 dep-install-prd:
-	composer install --no-dev --optimize-autoloader --no-ansi --no-interaction --no-progress --no-scripts
+	./bin/docker-run.sh ${CONTAINER_NAME} composer install --no-dev --optimize-autoloader --no-ansi --no-interaction --no-progress --no-scripts
 
 dep-update:
-	composer update
+	./bin/docker-run.sh ${CONTAINER_NAME} composer update
 
-test:
+.test:
 	- $(MAKE) cs-fix
 	bin/phpunit
-	$(MAKE) test-dep
+	$(MAKE) .test-dep
 
-test-dep:
-	$(MAKE) test-dep-components
-	$(MAKE) test-dep-layers
-	$(MAKE) test-dep-class
+test:
+	./bin/docker-run.sh ${CONTAINER_NAME} make .test
+
+.test-ci:
+	$(MAKE) .cs-fix-ci
+	bin/phpunit
+	$(MAKE) .test-dep
+
+.test-dep:
+	$(MAKE) .test-dep-components
+	$(MAKE) .test-dep-layers
+	$(MAKE) .test-dep-class
 
 test-dep-graph:
 	$(MAKE) test-dep-components-graph
 	$(MAKE) test-dep-layers-graph
 	$(MAKE) test-dep-class-graph
 
-test-dep-components:
+.test-dep-components:
 	$(MAKE) .dep_analyzer-install
 	bin/deptrac analyze depfile.components.yaml --formatter-graphviz=0
 
@@ -80,7 +98,7 @@ test-dep-components-graph:
 	$(MAKE) .dep_analyzer-install
 	bin/deptrac analyze depfile.components.yaml --formatter-graphviz-dump-image=var/deptrac_components.png --formatter-graphviz-dump-dot=var/deptrac_components.dot
 
-test-dep-layers:
+.test-dep-layers:
 	$(MAKE) .dep_analyzer-install
 	bin/deptrac analyze depfile.layers.yaml --formatter-graphviz=0
 
@@ -88,7 +106,7 @@ test-dep-layers-graph:
 	$(MAKE) .dep_analyzer-install
 	bin/deptrac analyze depfile.layers.yaml --formatter-graphviz-dump-image=var/deptrac_layers.png --formatter-graphviz-dump-dot=var/deptrac_layers.dot
 
-test-dep-class:
+.test-dep-class:
 	$(MAKE) .dep_analyzer-install
 	bin/deptrac analyze depfile.classes.yaml --formatter-graphviz=0
 
@@ -99,5 +117,7 @@ test-dep-class-graph:
 # We use phpdbg because is part of the core and so that we don't need to install xdebug just to get the coverage.
 # Furthermore, phpdbg gives us more info in certain conditions, ie if the memory_limit has been reached.
 test_coverage:
-	phpdbg -qrr bin/phpunit --coverage-text --coverage-clover=${COVERAGE_REPORT_PATH}
+	./bin/docker-run.sh ${CONTAINER_NAME} phpdbg -qrr bin/phpunit --coverage-text --coverage-clover=${COVERAGE_REPORT_PATH}
 
+.test_coverage-ci:
+	phpdbg -qrr bin/phpunit --coverage-text --colors=never

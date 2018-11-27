@@ -1,0 +1,33 @@
+FROM php:alpine
+
+# `apk --update`    updates indexes before installing
+# `apk --no-cache`  doesn't put stuff in the cache, so we don't need to remove it at the end
+# `apk --virtual`   lets us uninstall temporary dependencies in one go at the end
+RUN apk --update add --no-cache --virtual build-dependencies autoconf g++ && \
+    apk add --no-cache make zlib-dev curl git unzip icu-dev libxml2-dev graphviz && \
+    mkdir -p /tmp/pear/cache && \
+    docker-php-ext-configure bcmath && \
+    docker-php-ext-install bcmath && \
+    docker-php-ext-configure ctype && \
+    docker-php-ext-install ctype && \
+    docker-php-ext-configure dom && \
+    docker-php-ext-install dom && \
+    docker-php-ext-configure iconv && \
+    docker-php-ext-install iconv && \
+    docker-php-ext-configure intl && \
+    docker-php-ext-install intl && \
+    docker-php-ext-configure json && \
+    docker-php-ext-install json && \
+    docker-php-ext-configure zip && \
+    docker-php-ext-install zip && \
+    pecl install xdebug-2.6.1 && \
+    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer && \
+    curl -LS http://get.sensiolabs.de/deptrac.phar -o /usr/bin/deptrac && \
+    chmod +x /usr/bin/deptrac && \
+    apk del build-dependencies && \
+    rm -rf /var/cache/apk/* && \
+    pecl clear-cache
+
+COPY build/php.ini /usr/local/etc/php/php.ini
+
+COPY build/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
