@@ -1,0 +1,21 @@
+{
+    "banner": [
+        "This file is part of my Symfony Boilerplate project.",
+        "",
+        "(c) Herberto Graça <herberto.graca@gmail.com>",
+        "",
+        "This source file is subject to the license that is bundled",
+        "with this source code in the file LICENSE."
+    ],
+    "datetime": "release-date",
+    "directories": [
+        "config",
+        "var/cache/prod"
+    ],
+    "files": [
+        "composer.json"
+    ],
+    "force-autodiscovery": true,
+    "main": "bin/console",
+    "output": "boilerplate.phar"
+}

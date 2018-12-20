@@ -40,6 +40,20 @@ box-build:
 box-push:
 	docker push ${CONTAINER_NAME}
 
+.compile:
+	if [ ! -f bin/box ]; then \
+      echo " // humbug/box not found in bin/box. Downloading it ..."; \
+      curl -J -L https://github.com/humbug/box/releases/download/3.3.1/box.phar -o bin/box; \
+      chmod +x bin/box; \
+  fi;
+	echo " // purging prod cache ..."
+	rm -Rf var/cache/prod/*
+	bin/console cache:warmup --env=prod --no-debug
+	bin/box compile
+
+compile:
+	./bin/docker-run.sh ${CONTAINER_NAME} make .compile
+
 .cs-fix:
 	php vendor/bin/php-cs-fixer fix --verbose
 

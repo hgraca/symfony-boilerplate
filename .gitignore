@@ -1,6 +1,9 @@
 !**/.gitkeep
-Makefile.custom
+box
+cmapper
+cmapper.phar
 deptrac
+Makefile.custom
 
 ###> symfony/framework-bundle ###
 /.env
